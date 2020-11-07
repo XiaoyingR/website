@@ -1,0 +1,18 @@
+
+2020-10-05 13:06:21.882331 start running.
+2020-10-05 13:06:21.882822 connected to es1 for searching.
+
+2020-10-05 13:06:45.925667 start running.
+2020-10-05 13:06:45.926810 connected to es1 for searching.
+
+2020-10-09 05:49:37.539362 start running.
+2020-10-09 05:49:37.539929 connected to es1 for searching.
+
+2020-10-09 05:59:47.386070 start running.
+2020-10-09 05:59:47.386880 connected to es1 for searching.
+
+2020-10-09 06:27:56.738074 start running.
+2020-10-09 06:27:56.738843 connected to es1 for searching.
+
+2020-11-01 14:02:08.947916 start running.
+2020-11-01 14:02:08.949042 connected to es1 for searching.

@@ -1,0 +1,63 @@
+/****************************** Top slide down ******************************/
+#slideout_inner .smulogo{
+	width:50%;
+	max-width:196px;
+	float:left;
+}
+
+#slideout_inner .smulogo img{
+	width:100%;
+}
+
+#slideout_inner .headerlinks{
+	width:50%;
+	float:right;
+	text-align:right;
+}
+
+#slideout_inner .headerlinks a, #slideout_inner .headerlinks a:visited{
+	display:block;
+	padding:1px;
+	font-size:11px;
+	color:#000;
+	font-weight:normal;
+	text-decoration:none;
+}
+
+#slideout_inner .headerlinks a:hover{
+	color:#c4b26c;
+}
+
+#slideout {
+  position:fixed;
+  width:100%;
+  height:50px;
+  top: 0px;
+  left: 0;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  z-index:999;
+}
+#slideout_inner {
+  position:relative;
+  display:none;
+  width:100%;
+  height:80px;
+  background-color:#F3F3F3;
+  left: 0px;
+}
+
+#slideout .menu{
+	text-align:right;
+	margin-right:10px;
+	cursor:pointer;
+}
+
+#slideout .menubg{
+	background-color:#cc9d00;
+	height:4px;
+}
+
+/****************************** Top slide down end ******************************/

@@ -1,0 +1,242 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Social Media Analytics for Municipal Issues</title>
+<link rel="stylesheet" type="text/css" href="../static/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="../static/css/style.css" />
+<link rel="stylesheet" type="text/css" href="../static/css/slideout.css" />
+<link href="../static/css/form.css" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" type="text/css" href="../static/css/jquery.datetimepicker.css"/>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="../static/js/jquery-1.5.2.js"></script>
+        <script type="text/javascript" src="../static/js/animatescroll.js"></script>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+	//Check to see if the window is top if not then display button
+	$(window).scroll(function(){
+		if ($(this).scrollTop() > 100) {
+			$('.backtotop').fadeIn();
+		} else {
+			$('.backtotop').fadeOut();
+		}
+	});
+	//Click event to scroll to top
+	$('.backtotop').click(function(){
+		$('html, body').animate({scrollTop : 0},800);
+		return false;
+	});
+
+    });
+
+    //$(function(){
+    var count = 0;
+    //function reset()
+    if($(window).scrollTop()==0){
+        console.log("in ScrollTop");
+        ajaxRead();
+    }
+    $(window).bind('scroll',function(){console.log("in window"); show()});
+
+
+    $(document).ready(function()
+    {
+        $( "#newSearch" ).click(function() {
+            //alert("Handler for .click() called.");
+            //alert($("#date_choice1").val())
+            //alert($("#usertype").val())
+            data = {
+                data: JSON.stringify({
+                    "category": $("#usertype").val(),
+                    "date_start": $("#date_choice1").val(),
+                    "date_end": $("#date_choice2").val()
+                })
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/callback",
+                data: data,
+            })
+        })
+
+    });
+
+    function show()
+    {
+        if($(window).scrollTop()+$(window).height()>=$(document).height())
+        {
+            ajaxRead();
+        }
+    }
+
+        function ajaxRead()
+        {
+            var data = {
+                data: JSON.stringify({
+                    "value": count++
+                })
+            }
+
+            var html="";
+            $.ajax({
+                url: '/ajax',
+                dataType:'json',
+                type: 'POST',
+                data: data,
+                beforeSend:function(){console.log('loading...')},
+                success:function(response){
+                    console.log(response);
+                    console.log(count)
+
+                    $.each(response.date,function(i,item){
+                        html += '<div class="row"><div class="col1"><div class="padding1020">'
+                        html += response.text[i]
+                        html += '</div></div><div class="col2"><div class="padding10">'
+                        html += item
+                        html += '</div></div></div>'
+                    });
+                    $("#resText").append($(html));
+                },
+                complete:function(){console.log('mission acomplete.')}
+
+            });
+        }
+    //})
+
+</script>
+    <script>
+			$(document).ready(function(){
+				$(".menu").click(function(){
+					$("#slideout_inner").slideToggle();
+				});
+			});
+
+    </script>
+        <!-- EaseEffect
+        swing, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart,easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInSine, easeOutSine, easeInOutSine, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInElastic, easeOutElastic, easeInOutElastic, easeInBack, easeOutBack, easeInOutBack, easeInBounce, easeOutBounce, easeInOutBounce
+		-->
+</head>
+
+<body>
+
+<div class="maincontainer">
+	<div id="slideout">
+		<div id="slideout_inner">
+			<div class="smulogo"><img src="../static/images/larc_logo.png"></div>
+			<div class="headerlinks">
+				<div class="padding10">
+					<a href="http://www.smu.edu.sg/" target="_blank">SMU Website</a>
+					<a href="http://larc.smu.edu.sg/" target="_blank">LARC Website</a>
+					<a href="https://larc.smu.edu.sg/research/portfolio" target="_blank">All Projects</a>
+				</div>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+
+		<div class="menubg"></div>
+		<div class="menu"><img src="../static/images/menu.png" alt="Menu" /></div>
+	</div><!-- slideout -->
+	
+	<div class="header_wrap">
+		<div class="header padding20">Social Media Analytics for<br>Municipal Issues</div>
+	</div><!-- header_wrap -->
+	<div class="search_wrap">
+		<div class="search_bg">
+			<div class="search">
+				<form class="contact_form" name="contact_form">
+					<div class="col col1">
+						Start Date
+						<input type="text" class="datetimepicker1" id= date_choice1 placeholder="DD/MM/YYYY"/>
+					</div>
+					<div class="col col1">
+						End Date
+						<input type="text" class="datetimepicker1" id= date_choice2 placeholder="DD/MM/YYYY" />
+					</div>
+					<div class="col col3">
+						Category<br>
+						<select id="usertype" value='All'>
+                            <optgroup label="ALL">
+                                <option value="All">All</option>
+                            </optgroup>
+                        	<optgroup label="SUB-CATEGORY">
+                            {% for entry in category %}
+                            <option value="{{ entry }}">{{ entry }}</option>
+                            {% endfor %}
+                            </optgroup>
+                       </select>
+					</div>
+					<div class="col col1">
+						<button class="submit" id="newSearch">Search </button>
+					</div>
+                    <div class="clearboth"></div>
+				</form>
+			</div>
+		</div>
+		
+		<div class="title">
+			<div class="title_ctn">
+				<div class="col1"><div class="padding1020"><div class="icon"><img src="../static/images/icon-feed.png"></div>Feeds</div></div>
+				<div class="col2"><div class="padding10"><div class="icon"><img src="../static/images/icon-date.png"></div>Date</div></div>
+			</div>
+		</div><!-- row-->
+	</div><!-- search_wrap -->
+	<div class="result_wrap">
+        <!--
+		<div class="row">
+			<div class="col1">
+				<div class="padding1020">7 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</div></div>
+				<div class="col2"><div class="padding10">12 Jan 2017 | 3:15pm</div></div>
+		</div><!-- row-->
+        <!--
+		<div class="row">
+			<div class="col1">
+				<div class="padding1020">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</div></div>
+				<div class="col2"><div class="padding10">12 Jan 2017 | 3:15pm</div></div>
+		</div><!-- row-->
+
+
+        <!-- the scroll part -->
+        <div id="resText"></div>
+
+	</div><!-- result_wrap -->
+
+    <div class="backtotop"><a href="#"><div>Top</div></a></div>
+	<div class="footer">© Copyright Social Media Analytics for Municipal Issues. All rights reserved.
+	</div>
+<script src="../static/js/jquery.js"></script>
+<script src="../static/js/jquery.datetimepicker.full.js"></script>
+<!-- write script to toggle class on scroll -->
+<script>
+$(window).scroll(function() {
+    if ($(this).scrollTop() > 1){  
+        $('.search_wrap').addClass("sticky");
+        $('.search_bg').addClass("sticky");
+    }
+    else{
+        $('.search_wrap').removeClass("sticky");
+        $('.search_bg').removeClass("sticky");
+    }
+});
+	
+$('.datetimepicker1').datetimepicker({
+	lang:'en',
+	timepicker:false,
+	format:'d/m/Y',
+	//formatDate:'Y/m/d',
+	//minDate:'-1970/01/02', // yesterday is minimum date
+	//maxDate:'+1970/01/02' // and tommorow is maximum date calendar
+});
+</script>
+</div>
+</body>
+</html>
